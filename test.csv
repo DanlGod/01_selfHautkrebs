@@ -1,0 +1,2 @@
+name;vorname;geburtsdatum;versichertenId;strasse;hausnummer;plz;ort;versichertenart;geschlecht;bsn;lanr;arztname
+Müller;Hans;01.01.1980;A1;Str.;1;12345;Berlin;1;M;B1;L1;Dr. Test
