@@ -5,6 +5,134 @@
 
 ---
 
+## 0. NetBeans 22 Setup
+
+Das Projekt wurde mit IntelliJ erstellt, läuft aber genauso gut in NetBeans 22.
+Da es ein **Maven-Projekt** ist, erkennt NetBeans alles automatisch –
+keine NetBeans-spezifischen Projektdateien (`nbproject/`) nötig.
+Die Anweisungen weiter unten erwähnen manchmal IntelliJ-Shortcuts –
+hier die NetBeans-Entsprechungen.
+
+### Voraussetzungen
+
+1. **JDK 21** installiert (https://adoptium.net/ → "Temurin 21 LTS")
+2. **NetBeans 22** installiert (https://netbeans.apache.org/front/main/download/)
+3. **Maven** – ist bei NetBeans 22 schon eingebaut, du musst nichts extra installieren
+
+### Java-Plattform in NetBeans prüfen
+
+`Tools → Java Platforms` → Es sollte **JDK 21** aufgelistet sein.
+Falls nicht: "Add Platform" → JDK-Ordner auswählen (z. B. `C:\Program Files\Eclipse Adoptium\jdk-21...`).
+
+### Projekt öffnen
+
+`File → Open Project` → den Ordner `01_selfHautkrebs` auswählen
+(NetBeans erkennt das Maven-Symbol am Ordner – kleines lila Symbol).
+**Nicht** "Open Folder" – das ist was anderes.
+
+Beim ersten Öffnen lädt NetBeans alle Maven-Dependencies (JavaFX, JUnit).
+Unten rechts läuft eine Fortschrittsanzeige – ein paar Minuten Geduld.
+
+### App starten
+
+Drei Wege:
+1. **Hauptfenster oben:** grüner Pfeil ▶ ("Run Project") – kann beim ersten Mal fragen welche Main-Klasse → `MainApp` auswählen
+2. **Rechtsklick aufs Projekt** im Projects-Panel links → "Run"
+3. **Terminal/Cmd** im Projektordner: `mvn javafx:run`
+4. **Maven-Goal direkt:** Rechtsklick aufs Projekt → "Custom" → "Goals..." → eingeben: `javafx:run`
+
+### Tests starten
+
+Rechtsklick auf `PatientTest.java` im Projects-Panel → **"Test File"**
+oder Tastenkürzel **`Strg+F6`**.
+
+Für alle Tests: Rechtsklick aufs Projekt → **"Test"** (`Alt+F6`).
+
+Unten erscheint das "Test Results"-Fenster mit den grünen/roten Häkchen.
+
+### IntelliJ → NetBeans Shortcut-Übersetzung
+
+| IntelliJ | NetBeans 22 |
+|---|---|
+| `Alt+Insert` (Generate Getter/Setter) | `Alt+Einfg` – derselbe Shortcut! → "Getter and Setter" auswählen |
+| `Strg+Shift+F10` (Run Test) | `Strg+F6` (aktuelle Test-Datei) |
+| Rechtsklick → Refactor → Rename | `Strg+R` (auf markiertem Symbol) oder Rechtsklick → "Refactor → Rename" |
+| Rechtsklick → New → Java Class | Rechtsklick auf Paket → "New → Java Class..." |
+| Rechtsklick → New → Package | Rechtsklick auf `Source Packages` → "New → Java Package..." |
+| `Strg+Alt+L` (Format Code) | `Alt+Shift+F` |
+| `Strg+B` (Go to Definition) | `Strg+B` – derselbe Shortcut! |
+| `Strg+Space` (Autocomplete) | `Strg+Space` – derselbe Shortcut! |
+| Maven-Reload | Rechtsklick aufs Projekt → "Reload POM" |
+
+### Klasse anlegen in NetBeans
+
+1. Im **Projects-Panel** (links) Projekt aufklappen → `Source Packages` aufklappen
+2. Rechtsklick auf das Ziel-Paket (z. B. `de.ehks._1_selfhautkrebs.model`)
+3. **New → Java Class...** (oder bei Enum: New → Other → Java → Enum)
+4. Name eingeben (ohne `.java`) → Finish
+
+NetBeans setzt die `package`-Zeile automatisch korrekt.
+
+### Getter/Setter generieren in NetBeans
+
+1. Cursor in den Klassenrumpf setzen
+2. **`Alt+Einfg`** drücken (oder Rechtsklick → "Insert Code...")
+3. **"Getter and Setter..."** wählen → alle Felder ankreuzen → Generate
+
+Genauso für **"Constructor..."** und **"toString()..."**.
+
+### Datei umbenennen (mit Auto-Refactor)
+
+Rechtsklick auf die Datei → **Refactor → Rename...** → neuer Name → Enter.
+NetBeans aktualisiert automatisch alle Verweise im Code.
+
+> WICHTIG: NICHT die Datei im Datei-Explorer von Windows umbenennen –
+> dann verliert NetBeans die Referenzen. Immer über Refactor!
+
+### FXML-Datei bearbeiten – Scene Builder
+
+NetBeans hat **keinen eingebauten** visuellen FXML-Editor, aber Integration mit Scene Builder.
+
+1. **Scene Builder installieren:** https://gluonhq.com/products/scene-builder/
+2. In NetBeans: `Tools → Options → Java → JavaFX` → Scene Builder Home auf den Installationsordner setzen
+3. Danach: Doppelklick auf `.fxml` öffnet die Datei automatisch im Scene Builder
+
+Für dieses Projekt ist aber **reines Text-Editing völlig ausreichend** – die FXML steht ja schon komplett im Dokument.
+
+Falls die FXML nur als Code angezeigt wird statt im Scene Builder:
+Rechtsklick → **"Open"** (statt "Edit") → öffnet im Scene Builder.
+
+### Wo welche Ordner sind im Projects-Panel
+
+NetBeans zeigt Maven-Projekte mit **logischer** Ordnerstruktur an,
+nicht 1:1 wie auf der Festplatte:
+
+| Im Projects-Panel | Real auf der Platte |
+|---|---|
+| Source Packages | `src/main/java/` |
+| Other Sources → resources | `src/main/resources/` |
+| Test Packages | `src/test/java/` |
+| Project Files | `pom.xml`, `module-info.java` |
+| Dependencies | von Maven verwaltet, nicht anfassen |
+
+Wenn du die "echte" Ordnerstruktur sehen willst: oben links neben "Projects" auf
+**"Files"** umschalten – zeigt die normale Ordneransicht.
+
+### Häufige NetBeans-Stolperfallen
+
+| Problem | Lösung |
+|---|---|
+| Rote Fehler obwohl Code OK ist | Rechtsklick aufs Projekt → "Clean and Build" → dann "Reload POM" |
+| Maven-Befehle finden Dependencies nicht | Rechtsklick aufs Projekt → "Reload POM" – immer der erste Schritt bei seltsamen Fehlern |
+| `module-info.java` Fehler | Sicherstellen dass JDK 21 in `Project Properties → Sources → Source/Binary Format = 21` |
+| FXML wird im Editor nicht erkannt | XML-Plugin via `Tools → Plugins → Installed` aktivieren |
+| Test-Runner findet keine Tests | JUnit 5 Engine nicht geladen → Rechtsklick → "Reload POM" |
+| App startet aber Fenster leer | In der Konsole nach `Caused by:` suchen – meist `fx:id` falsch geschrieben |
+| `mvn javafx:run` funktioniert nicht aus dem grünen Pfeil | Stattdessen Rechtsklick aufs Projekt → "Custom → Goals..." → `javafx:run` |
+| Encoding-Warnungen (Umlaute kaputt) | `File → Project Properties → Sources → Encoding = UTF-8` |
+
+---
+
 ## 1. Was ist das Projekt?
 
 Eine JavaFX-Desktop-App zur Dokumentation von Hautkrebs-Screening-Untersuchungen
